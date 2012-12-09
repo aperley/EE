@@ -7,7 +7,7 @@ function [ A b ] = constraints( S, C, P )
 % b is # constraints by 1
 % A * x <= b
 
-total = S*P + S*C;  % CHANGE ME BASED ON # OF CONSTRAINTS
+total = S*P + S*C + C*P;  % CHANGE ME BASED ON # OF CONSTRAINTS
 
 A = zeros(total, S*C*P);
 b = zeros(total, 1);
@@ -39,6 +39,17 @@ for s = 1:S
     display(sprintf('%i of %i', counter, total));
 end
 
+
+for c=1:C
+    for p=1:P
+        a = zeros(vars);
+        a(:,c,p) = 1;
+        A(counter, :) = a(:);
+        b(counter) = 30; % MAX CLASS SIZE
+        counter = counter + 1;
+    end
+    display(sprintf('%i of %i', counter, total));
+end
 
 b = b';
 display(sprintf('%i constraints', counter - 1));
