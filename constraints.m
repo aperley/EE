@@ -51,6 +51,7 @@ for c=1:C
     display(sprintf('%i of %i', counter, total));
 end
 
-b = b';
+A = sparse(A);
+b = sparse(b');
 display(sprintf('%i constraints', counter - 1));
 end

@@ -14,6 +14,6 @@ for i=1:size(requests,1)
     end
 end
 
-f = -f(:)';
+f = sparse(-f(:)');
 
 end
