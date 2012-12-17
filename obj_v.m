@@ -1,19 +1,15 @@
 function [ f ] = obj_v( S, C, P, requests )
 %OBJ_V Determines an objective function vector
-%   OBJ_V(S, C, P, requests)
+%   OBJ_V(S, C, P, requests) requests is S by C
 
-% f(:) is S*C*P by 1 objective function.
-% x(:) is long by 1
-% f(:)' * x(:) gives number for objective to maximize
-% -f(:)' * x(:) gives objective to minimize
-
-f = zeros([S C P]);
-for i=1:size(requests,1)
-    for j=1:size(requests,2)
-        f(i,j,:) = requests(i,j);
+f = zeros([S C P]); % Initialize f
+for i=1:S   % For each element in requests
+    for j=1:C
+        % Set all of periods in f for that student and course equal to
+        % -requests. If the student wants the course, the periods are
+        % filled with -1s, else they are filled with 0s
+        f(i,j,:) = -requests(i,j); 
     end
 end
-
-f = sparse(-f(:)');
-
+f = f(:); % Reshape f into a vector
 end

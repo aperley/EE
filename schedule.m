@@ -1,27 +1,18 @@
-clear
-clc
-
 S = 100; % Number of Students
-P = 8; % Number of Periods
+P = 5; % Number of Periods
 C = 20; % Number of Courses
 
-time = zeros(4,1);
 
-%requests = zeros(S, C);
-tic
-requests = sparse(randi([0 1], [S C]));
-time(1) = toc;
+% Randomly generate students requests
+picks = randi([1 C], [S P]); % Each student randomly selects P courses
+requests = zeros(S,C);
+for s=1:S
+    requests(s, picks(s, :)) = 1; % Set requests(s, p) equal to 1 for each
+end                               % course the student selected
 
-tic
-f = obj_v(S,C,P, requests);
-time(2) = toc;
+f = obj_v(S,C,P, requests); % Generate the objective matrix f
 
-tic
-[A b] = constraints(S,C,P);
-time(3) = toc;
+[A b] = constraints(S,C,P); % Generate the constraints
 
-tic
-[soln fval exitflag output] = bintprog(f, A, b);
-time(4) = toc;
-
-soln = reshape(soln, S, C, P);
+[soln fval exitflag output] = bintprog(f', A, b'); % Optimize
+soln = reshape(soln, S, C, P); % Reshape the solution into an S by C by P matrix
